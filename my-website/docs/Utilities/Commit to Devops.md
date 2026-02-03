@@ -6,7 +6,9 @@ sidebar_position: 1
 
 ## Commit
 1. Open your repository and your branch
+
 2. Click 'Clone' and copy https
+
 ![Commit1](../../static/img/commitdev/commit1.png)
 
 3. Open source tree on local computer, click 'Clone' and paste copied url.
