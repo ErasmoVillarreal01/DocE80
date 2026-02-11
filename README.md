@@ -2,10 +2,6 @@
 
 Welcome to the official documentation site for PC software developers. This site is built to provide clear, structured, and up-to-date technical documentation to support development workflows, tools, and best practices.
 
-## 📚 About This Site
-
-This documentation is maintained using [Docusaurus](https://docusaurus.io/), a modern static site generator optimized for technical content. It is designed to be easy to update, collaborate on, and deploy.
-
 ## 🛠️ Getting Started with Updates
 
 To contribute or update the documentation, please ensure you have the following tools installed on your system:
@@ -17,6 +13,20 @@ To contribute or update the documentation, please ensure you have the following 
   👉 [Download Node.js](https://nodejs.org/en/download/)
 
 Once installed, you can clone the repository, install dependencies, and start the local development server.
+
+Clone the repository, create a branch and start adding you info.
+```bash
+git branch {NameOfYourBranch}
+git checkout {NameOfYourBranch}
+```
+
+To visualize it on local server use this commands the first time.
+
+```bash
+cd my-website
+npm ci
+npm run start
+```
 
 ## 🚀 Docusaurus Documentation
 
