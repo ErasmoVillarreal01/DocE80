@@ -2,8 +2,8 @@
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'PC SW Developer Documentation',
-  tagline: 'Documentation Site',
+  title: 'PC SW Developer',
+  tagline: 'Documentation',
   favicon: 'img/e80icon.ico',
 
   // =========================================================
@@ -48,6 +48,20 @@ const config = {
     ],
   ],
 
+  
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'queries',
+        path: 'queries',
+        routeBasePath: 'queries', // URL will be /DocE80/queries/
+        sidebarPath: require.resolve('./sidebars.js'),
+      },
+    ],
+  ],
+
+
   // =========================================================
   // Theme Config
   // =========================================================
@@ -62,6 +76,13 @@ const config = {
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'Documentation',
+          },          
+          {
+            type: 'docSidebar',
+            sidebarId: 'queries',
+            docsPluginId: 'queries',
+            position: 'left',
+            label: 'Queries',
           },
           {
             href: 'https://github.com/ErasmoVillarreal01/DocE80',
@@ -72,7 +93,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} PC SW Developer.`,
+        copyright: `Copyright © ${new Date().getFullYear()} E80Group PC SW Developer.`,
       },
     }),
 };

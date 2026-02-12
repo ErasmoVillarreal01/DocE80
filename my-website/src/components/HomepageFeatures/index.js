@@ -1,3 +1,4 @@
+import Link from '@docusaurus/Link';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
@@ -5,15 +6,17 @@ import styles from './styles.module.css';
 const FeatureList = [
   {
     title: 'Documentation',
+    url: '/docs/intro', // external
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Structured record of information that helps individuals and teams understand, use, and maintain systems, processes, or products effectively.
+        Information which helps to customize systems, processes, based on experiences.
       </>
     ),
   },
   {
-    title: 'Useful Queries',
+    title: 'Queries',
+    url: 'queries/intro', // external
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
@@ -22,26 +25,40 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Tools',
+    title: 'Official E80 User Guides',
+    url: 'https://userguide.elettric80.it/', // external
+    external: true,
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Download helpful tools, save your favorite snippets, and streamline your workflow in one place.
+       Official E80 user guides and documentation for operating, configuring, and maintaining systems.
+
       </>
     ),
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({ Svg, title, description, url, external }) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
+      <Link
+        className={clsx('card', styles.featureCard)}
+        to={url}
+        
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        aria-label={title}
+
+      >
+        <div className="card__body">
+          <div className="text--center">
+            <Svg className={styles.featureSvg} role="img" />
+          </div>
+          <div className="text--center padding-horiz--md">
+            <Heading as="h3">{title}</Heading>
+            <p>{description}</p>
+          </div>
+        </div>
+      </Link>
     </div>
   );
 }
@@ -52,10 +69,11 @@ export default function HomepageFeatures() {
       <div className="container">
         <div className="row">
           {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+            <Feature key={props.title ?? idx} {...props} />
           ))}
         </div>
       </div>
     </section>
   );
 }
+``

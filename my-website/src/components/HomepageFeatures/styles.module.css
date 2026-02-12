@@ -9,3 +9,33 @@
   height: 200px;
   width: 200px;
 }
+
+/* Make the whole card look like a block, clickable, without underlines */
+.featureCard {
+  display: block;
+  text-decoration: none !important;             /* remove underline in all browsers */
+  color: inherit;                                /* avoid default link color if you prefer */
+}
+
+/* Ensure no underline shows up on hover/focus/visited */
+.featureCard:hover,
+.featureCard:focus,
+.featureCard:active,
+.featureCard:visited {
+  text-decoration: none !important;
+}
+
+/* Some browsers propagate text-decoration to descendants — neutralize it */
+.featureCard * {
+  text-decoration: none !important;
+}
+
+/* Optional: clean hover effect without adding text-decoration */
+.featureCard {
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.featureCard:hover,
+.featureCard:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
