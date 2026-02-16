@@ -1,7 +1,8 @@
+# YETR
 This page will talk about the different steps and requirments needed to create a page from scratch.
 
 ***
-# **Step 1: Define the WebUI Page Functionality**
+## **Step 1: Define the WebUI Page Functionality**
 Before any development begins, the analyst should clearly determine the expected behavior of the WebUI page.  
 
 To do this, the following guiding questions must be answered:
@@ -29,7 +30,7 @@ To do this, the following guiding questions must be answered:
 </br>
 
 ***
-# **Step 2: Create the required Stored Procedure(s)**
+## **Step 2: Create the required Stored Procedure(s)**
 
 *(Applicable when the page performs actions other than simply displaying data.)*
 
@@ -44,9 +45,9 @@ Note that BFF endpoints commonly return the result content in **XML format**, us
 DECLARE @ResultCode INT = 0,
         @ResultText XML = NULL;
 
-EXEC [Schema].[usp_ProcedureName]
-    @Variable_1 = 'Value_1',
-    @Variable_N = 'Value_N',
+EXEC [`SCHEMA_NAME`].[`PROCEDURE_NAME`]
+    @Variable_1 = '`VALUE_1`',
+    @Variable_N = '`VALUE_N`',
     @ResultCode = @ResultCode OUT,
     @ResultText = @ResultText OUT;
 ```
@@ -55,27 +56,27 @@ EXEC [Schema].[usp_ProcedureName]
 </br>
 
 ***
-# **Step 3: Create the Required View(s)**
+## **Step 3: Create the Required View(s)**
 
 *(Views are used exclusively for data retrieval and presentation.)*
 
 For each section defined in the selected layout, a dedicated view must be created.  
-Each view should expose only the variables and fields necessary to display the required information on the WebUI page.
+Each view should expose only the variables and fields necessary to display the required information on the WebUI page. Each view must have a variable called Id.
 
 Only **one view per layout section** should be created to maintain clarity, modularity, and ease of maintenance.
 
 A standard view definition follows the structure shown below:
 
 ```sql
-CREATE VIEW [Schema].[vwViewName]
+CREATE VIEW [`SCHEMA_NAME`].[`VIEW_NAME`]
 AS
 
 SELECT
     t1.Id,
     t2.Id AS IdTable2,
     t1.Name
-FROM [Schema].[Table_1] AS t1
-LEFT JOIN [Schema].[Table_2] AS t2 
+FROM [`SCHEMA_NAME`].[`TABLE_NAME_1`] AS t1
+LEFT JOIN [`SCHEMA_NAME`].[`TABLE_NAME_2`] AS t2 
     ON t1.Id = t2.Id_Table1
 WHERE t2.Id IS NULL;
 ```
@@ -84,33 +85,325 @@ WHERE t2.Id IS NULL;
 </br>
 
 ***
-# **Step 4: Update DbContext.cs**
+## **Step 4: Update `DbContext.cs`**
 
-*(From this step formward, the process wil be done on the BFF code, until stated otherwise.)*
+*(From this step forward, all actions take place in the BFF code unless stated otherwise.)*
 
-To pass the creted views on the Bff project, the DbContext file must be edited. To do so, the following steps are required:
-1. Navigate to SmileE80.Bff.Database -> Context
-2. Rename `BffDbContext.cs` ->  `BffDbContext_.cs`
-3. Right click on `SmileE80.Bff.Database` and select the option **Set as Startup Project** 
-4. On the top bar go to Tools -> NuGet Package Manager -> Package Manager Console (Make sure that on the top of the console the Default project is `SmileE80.Bff.Database`).
-5. The following command should be pasted on the console (changing the values between [] to the used ones): 
-```bash
-Scaffold-DbContext "Server=[DatabaseAPI];User ID=[UserName];Password=[Password];Database=[DatabaseName];MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Models" -Context "BffDbContext" -DataAnnotations -project "SmilE80.BFF.Database" -ContextDir "Context" -Tables "[ViewName]" -Force
+To expose the newly created views to the BFF project, the Entity Framework context must be updated.  
+The following procedure must be repeated **for each view** created in Step 3.
+
+
+### **4.1 Prepare the DbContext for the Update**
+
+1.  Navigate to the folder:  
+    **SmileE80.Bff.Database → Context**
+
+2.  Rename the file:  
+    `BffDbContext.cs` → `BffDbContext_.cs`  
+    *(This temporary rename prevents conflicts when scaffolding.)*
+
+3.  Right‑click on the project **SmileE80.Bff.Database** and select: **Set as Startup Project**
+
+### **4.2 Scaffold the New View**
+
+4.  Open the Package Manager Console:  
+    **Tools → NuGet Package Manager → Package Manager Console**  
+    Ensure the **Default Project** (shown at the top of the console) is:  
+    **SmileE80.Bff.Database**
+
+5.  Execute the following command, replacing values inside brackets with your specific information:
+
+```powershell
+Scaffold-DbContext "Server=`DATABASE_API`;User ID=`USERNAME`;Password=`PASSWORD`;Database=`DATABSE_NAME`;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Models" -Context "BffDbContext" -DataAnnotations -Project "SmileE80.Bff.Database" -ContextDir "Context" -Tables "`VIEW_NAME`" -Force
+```
+
+This command will generate a **new `BffDbContext.cs`** file along with a model for the selected view.
+
+### **4.3 Transfer the View Definitions**
+
+6.  Open the newly generated `BffDbContext.cs`.  
+    Locate the autogenerated definitions for your view. They will resemble:
+
+```csharp
+public virtual DbSet<`VIEW_NAME`> `VIEW_NAMES` { get; set; }
+
+modelBuilder.Entity<`VIEW_NAME`>(entity =>
+{
+    entity.ToView("`VIEW_NAME`", "`SCHEMA_NAME`");
+    ...
+});
+```
+
+7.  Copy the relevant `DbSet` and `modelBuilder` sections and paste them into the renamed file: **`BffDbContext_.cs`**
+
+*(Only the parts related to the new view should be copied.)*
+
+### **4.4 Finalize the Context Update**
+
+8.  Delete the newly generated `BffDbContext.cs`.
+
+9.  Rename the file:  
+    `BffDbContext_.cs` → `BffDbContext.cs`  
+    *(Restoring the context with the added view mappings.)*
+
+> Inside the folder Models, the added views should appear.
+
+<br>
+</br>
+
+***
+## **Step 5: Create a New Project (if needed)**
+
+*(If the target folder for your page already exists within an API project, **skip this step**.)*
+
+When a new API is required, create a dedicated ASP.NET Core project that will run under IIS.
+
+### **5.1 Create the Project**
+
+1.  In Visual Studio: **File → New → Project**
+2.  Choose **ASP.NET Core Empty** (C#).
+3.  Name the project following the convention:  
+    `SmilE80.Bff.PROJECT_NAME`
+
+### **5.2 Create the Base Folder Structure**
+
+Inside the new project, create the following folders:
+```
+    SmilE80.Bff.`PROJECT_NAME`
+     ├─ Controllers
+     ├─ Services
+     └─ Models
+         ├─ ReadModels
+         └─ WriteModels
+```
+*   **[Models](./Model.md)** → Classes used to **shape input/output data** for the API.
+*   **[Services](./Service.md)** → Classes that **encapsulate business logic** and orchestration.
+*   **[Controllers](./Controller.md)** → API endpoints that **receive requests and return responses**.
+
+> *Tip:* Keep the naming consistent with the feature/page being implemented. Example: `PutawayOrderController`, `PutawayOrderService`, `PutawayOrderReadModel`.
+
+<br>
+</br>
+
+***
+## **Step 6: Create the Required Model(s)**
+
+The number and type of models depend on what was built in **Step 2 (procedures)** and **Step 3 (views)**:
+
+*   For **views** → create **ReadModels** (output).
+*   For **procedures** → create **WriteModels** (input).
+
+
+### **6.1 ReadModels (for views)**
+
+A **ReadModel** should include the **fields returned by the view** created in Step 3.  
+If using AutoMapper with EF (entity framework) entities from `SmileE80.Bff.Database.Models`, annotate with `[AutoMap]`.
+
+**Example:**
+
+```csharp
+using AutoMapper;
+using SmilE80.Bff.Database.Models;
+
+namespace SmilE80.Bff.`PROJECT_NAME`.Models.ReadModels
+{
+    // Maps to EF entity generated from [`SCHEMA_NAME`].[`VIEW_NAME`]
+    [AutoMap(typeof(`VIEW_NAME`), ReverseMap = false)]
+    public class `VIEW_NAME_ReadModel`
+    {
+        // variables used in the view
+        public int Id { get; set; }
+        public int IdTable2 { get; set; }
+        public string Name { get; set; }
+    }
+}
+```
+**Guidelines**
+*   Include only fields needed by the WebUI.
+*   Keep these classes simple (no business logic).
+
+### **6.2 WriteModels / InputModels (for procedures)**
+
+A **WriteModel** represents the **input contract** required by the stored procedure(s) from Step 2.
+
+**Example:**
+
+```csharp
+namespace SmilE80.Bff.`PROJECT_NAME`.Models.WriteModels
+{
+    public class `PROCEDURE_NAME_WriteModel`    
+    {
+        public string Variable_1 { get; set; }
+        public string Variable_N { get; set; }
+    }
+}
+```
+**Guidelines**
+
+*   Prefer action‑based names, e.g., `GeneratePutawayOrderInputModel`.
+*   Add validation attributes where applicable (`[Required]`, `[StringLength]`, etc.).
+
+<br>
+</br>
+
+***
+## **Step 7: Create the Required Service(s)**
+
+A dedicated **service** must be created for each page.  
+The service acts as the **intermediate layer** between the controller and the database. It retrieves data from **views** (via the DbContext) and executes **stored procedures** created in Step 2.
+
+Below is an example structure:
+
+```csharp
+using AutoMapper;
+using Microsoft.Data.SqlClient;
+using SmilE80.AspNetCore.Common.DAL;
+using SmilE80.AspNetCore.Common.QueryPaging;
+using SmilE80.AspNetCore.Common.QuerySorting;
+using SmilE80.Bff.Database.Context;
+using SmilE80.Bff.Database.Models;
+using SmilE80.Bff.`PROJECT_NAME`.Models.ReadModels;
+using SmilE80.Bff.`PROJECT_NAME`.Models.WriteModels;
+using System.Data;
+
+namespace SmilE80.Bff.`PROJECT_NAME`.Services
+{
+    public class `SERVICE_NAME` : IService
+    {
+        private readonly BffDbContext _bffDbContext;
+        private readonly IMapper _mapper;
+
+        public `SERVICE_NAME`(BffDbContext bffDbContext, IMapper mapper)
+        {
+            _bffDbContext = bffDbContext;
+            _mapper = mapper;
+        }
+
+        // One method per view (Read)
+        public async Task<(IEnumerable<`VIEW_NAME_ReadModel`> Values, QueryPaginationResult PaginationResult)> `Get_VIEW_NAME`(string filters, QuerySort sorting, QueryPage paginator)
+                => await _mapper.GetQueryData<`VIEW_NAME_ReadModel`, `VIEW_NAME`>(_bffDbContext, filters, sorting, paginator);
+                
+        // One method per procedure (Write)
+        public async Task `Create_PROCEDURE_NAME`(`PROCEDURE_NAME_WriteModel` item, string userName)
+        {
+            var key = "`PROCEDURE_NAME`"; // Identifier for diagnostics/logging
+
+            var spText = @"[`SCHEMA_NAME`].[`PROCEDURE_NAME`]
+                            @Variable_1,
+                            @Variable_N";
+
+            var parameters = new[]
+            {
+                new SqlParameter("@Variable_1", SqlDbType.NVarChar) { Value = item.Variable_1 },
+                new SqlParameter("@Variable_N", SqlDbType.NVarChar) { Value = item.Variable_N },
+            };
+
+            await _bffDbContext.ExecuteStoredProcedure(key, spText, parameters);
+        }
+    }
+}
+```
+
+**Conventions**
+* **Read methods**: `Get + View Name` (e.g., `GetPutawayOrdersAsync`).
+* **Write methods**: `Action + Entity Name` (e.g., `CreatePutawayOrderAsync`).
+
+**Best Practices**
+* Logic should be minimal. No formatting, UI logic, or view-specific transformations.
+* Create a unique `key` value (identifier for logging and diagnostics).
+* Pass SQL parameters in the exact order expected by the procedure.
+* Avoid returning raw SQL data (the WebUI only needs the result message).
+
+<br>
+</br>
+
+***
+## **Step 8: Create the Required Controller(s)**
+
+Controllers **expose API endpoints**, call the **service**, and handle **input validation** and **HTTP responses**.
+
+One controller per section in a page/feature.  
+Endpoints:
+*   **GET** for views (read).
+*   **POST/PUT/DELETE** for procedures (write actions).
+
+```csharp
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SmilE80.AspNetCore.Common.ApiVersioning;
+using SmilE80.AspNetCore.Common.Authentication;
+using SmilE80.AspNetCore.Common.Authorization.DefaultPermissions;
+using SmilE80.AspNetCore.Common.ComboboxAPIs;
+using SmilE80.AspNetCore.Common.Models;
+using SmilE80.AspNetCore.Common.QueryPaging;
+using SmilE80.AspNetCore.Common.QuerySorting;
+using SmilE80.Bff.Database.Context;
+using SmilE80.Bff.`PROJECT_NAME`.Models.ReadModels;
+using SmilE80.Bff.`PROJECT_NAME`.Models.WriteModels;
+using SmilE80.Bff.`PROJECT_NAME`.Services;
+
+namespace SmilE80.Bff.`PROJECT_NAME`.Controllers
+{
+    [Route("api/`PROJECT_NAME`/[controller]"), ApiController]
+    [Authorize(Policy = "ApiNamePolicy")]
+    public class Controller : ControllerBase
+    {
+        private readonly `SERVICE_NAME` _service;
+
+        public `FEATURE_NAME_Controller`(`SERVICE_NAME` service)
+        {
+            _service = service;
+        }
+
+        // Returns paged, sorted, and filtered data from [`SCHEMA_NAME`].[`VIEW_NAME`].
+        [DefaultPermission(RoleType.None, RoleType.None, RoleType.Supervisor | RoleType.Operator | RoleType.Viewer)]
+        [HttpGet, ApiVersioning("1.0.0")]
+        public async Task<ListOfDtoResults<`VIEW_NAME_ReadModel`>> `Get_VIEW_NAME`(string filters, QuerySort sorting, QueryPage paginator)
+        {
+            var pagedResult = await _service.`Get_VIEW_NAME`(filters, sorting, paginator);
+            return new ListOfDtoResults<`VIEW_NAME_ReadModel`>(pagedResult.Values, pagedResult.PaginationResult);
+        }
+
+        // Executes [`SCHEMA_NAME`].[`PROCEDURE_NAME`].
+        [DefaultPermission(RoleType.None, RoleType.Supervisor | RoleType.Operator, RoleType.None)]
+        [HttpPost("`PROCEDURE_NAME`"), ApiVersioning("1.0.0")]
+        public async Task `Create_PROCEDURE_NAME`([FromBody] ProcedureNameWriteModel item)
+            => await _service.`Create_PROCEDURE_NAME`(item, User.GetUserName());
+
+        // In case a combobox is needed
+        [DefaultPermission(RoleType.None, RoleType.None, RoleType.Supervisor | RoleType.Operator | RoleType.Viewer)]
+        [HttpGet("`Get_TABLE_NAME`"), ApiVersioning("1.0.0")]
+        [EnableCombobox(nameof(BffDbContext), "`SCHEMA_NAME`.`TABLE_NAME`", "`VALUE_FIELD`", "`LABEL_FIELD`")]
+        public object `Get_TABLE_NAME`()
+        {
+            throw new ComboBoxOnlyMethodException();
+        }
+    }
+}
 ```
 
 <br>
 </br>
 
 ***
-# **Step 4: Create new proyect**
-### * In case the folder where you are going to add your page is already created, then skip this step.
+## **Step 9: Test API actions (not necessary but recomended)**
+To test the API actions created, there are different platforms to test like postman, swagger, etc.
 
-Create a new project **ASP.NET Core Empty**. This will be the new API inside the IIS.
+**[Swagger](./Swagger.md)** -> Guide on how to test in Swagger
 
-Inside the project, create three folders.
-1. Model
-2. Service
-3. Controller
+### **9.2 Postman**
+
+<br>
+</br>
+
+***
+## **Step 10: Publish new API or Page**
+
+<br>
+</br>
+
+***
+## **Step 11: Create new WebUi page**
 
 
 
