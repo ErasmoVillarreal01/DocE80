@@ -3,7 +3,7 @@
 2. In Visual Studio right‑click on the project **SmileE80.Bff.`PROJECT_NAME`** and select: **Set as Startup Project**, and run the project.
 3. Open Swagger on localhost: `http://localhost:PROJECT_API/swagger/index.html`.   
     *(The API is found on IIS -> selcting the name of the project and on the right something like the following image will be there.)*  
-    ![alt text](image.png)
+    ![alt text](../../static/img/bff/swaggerIp.png)
 4. Authorize the connection by writing the credentials
 5. Start testing the different actions.
     - when the action name like Get... ends in -sample. it means that it is just testing the logic on bff using sample data
