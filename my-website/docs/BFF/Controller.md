@@ -1,0 +1,1 @@
+Controllers **expose API endpoints**, call the **service**, and handle **input validation** and **HTTP responses**.
