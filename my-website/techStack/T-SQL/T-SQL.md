@@ -1,0 +1,1 @@
+Transact SQL (T-SQL) is a dialect of SQL, containing extensions that add to standard SQL.

@@ -1,0 +1,1 @@
+Abstraction refers to an abstract representation of the program. It simplifies complex systems by hiding unnecessary implementation details and exposing only essential features. The implementation is hidden and making changes becomes easier.

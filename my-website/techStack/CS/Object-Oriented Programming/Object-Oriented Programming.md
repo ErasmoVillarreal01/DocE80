@@ -1,0 +1,1 @@
+OOP's base are [Classes](../Fundamentals/Types/Reference%20Types/Class/Classes.md). Classes contain **Methods** and **Properties** and with them you can create objects.

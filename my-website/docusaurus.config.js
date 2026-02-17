@@ -59,6 +59,15 @@ const config = {
         sidebarPath: require.resolve('./sidebars.js'),
       },
     ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'techStack',
+        path: 'techStack',
+        routeBasePath: 'techStack', // URL will be /DocE80/tech-stack/
+        sidebarPath: require.resolve('./sidebars.js'),
+      },
+    ],
   ],
 
 
@@ -85,6 +94,13 @@ const config = {
             label: 'Queries',
           },
           {
+            type: 'docSidebar',
+            sidebarId: 'techStack',
+            docsPluginId: 'techStack',
+            position: 'left',
+            label: 'Tech Stack',
+          },
+          {
             href: 'https://github.com/ErasmoVillarreal01/DocE80',
             label: 'GitHub',
             position: 'right',
@@ -94,6 +110,9 @@ const config = {
       footer: {
         style: 'dark',
         copyright: `Copyright © ${new Date().getFullYear()} E80Group PC SW Developer.`,
+      },
+      prism: {
+        additionalLanguages: ['csharp'],
       },
     }),
 };
