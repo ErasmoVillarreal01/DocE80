@@ -28,6 +28,14 @@ npm ci
 npm run start
 ```
 
+## Build the Website in Github pages
+
+```bash
+cd my-website
+yarn build
+GIT_USER={USERNAME} yarn deploy
+```
+
 ## 🚀 Docusaurus Documentation
 
 For detailed instructions on how to install and use Docusaurus, refer to the official guide:  
