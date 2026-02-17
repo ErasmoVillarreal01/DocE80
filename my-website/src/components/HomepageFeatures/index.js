@@ -7,7 +7,7 @@ const FeatureList = [
   {
     title: 'Documentation',
     url: '/docs/intro', // external
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    imgSrc: require('@site/static/img/documentation.png').default,
     description: (
       <>
         Information which helps to customize systems, processes, based on experiences.
@@ -17,7 +17,7 @@ const FeatureList = [
   {
     title: 'Queries',
     url: 'queries/intro', // external
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    imgSrc: require('@site/static/img/queries.png').default,
     description: (
       <>
         Quick access to useful SQL queries for building, retrieving, and managing data.
@@ -28,7 +28,7 @@ const FeatureList = [
     title: 'Official E80 User Guides',
     url: 'https://userguide.elettric80.it/', // external
     external: true,
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    imgSrc: require('@site/static/img/eagle.png').default,
     description: (
       <>
        Official E80 user guides and documentation for operating, configuring, and maintaining systems.
@@ -38,7 +38,7 @@ const FeatureList = [
   },
 ];
 
-function Feature({ Svg, title, description, url, external }) {
+function Feature({ Svg, imgSrc, title, description, url, external }) {
   return (
     <div className={clsx('col col--4')}>
       <Link
@@ -51,7 +51,15 @@ function Feature({ Svg, title, description, url, external }) {
       >
         <div className="card__body">
           <div className="text--center">
-            <Svg className={styles.featureSvg} role="img" />
+            {Svg ? (
+              typeof Svg === 'string' ? (
+                <img src={Svg} className={styles.featureSvg} role="img" alt={title} />
+              ) : (
+                <Svg className={styles.featureSvg} role="img" />
+              )
+            ) : imgSrc ? (
+              <img src={imgSrc} className={styles.featureSvg} role="img" alt={title} />
+            ) : null}
           </div>
           <div className="text--center padding-horiz--md">
             <Heading as="h3">{title}</Heading>
