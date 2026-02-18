@@ -63,5 +63,5 @@ Like you did a pkup and it supposedly sent it somewhere, but we want to check mo
 
 If you get a warning then deselect "Take tail-log…" 
 
-![restore5](../../static/img/restore_bkup/restore6.png)
+![restore6](../../static/img/restore_bkup/restore6.png)
 
