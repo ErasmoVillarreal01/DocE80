@@ -1,20 +1,38 @@
 ---
 title: ITM_MST - Item Master
-tags: [sql, message-processing, scripts, sdm]
+tags: [sql, message-processing, scripts, sdm, host-messages]
 ---
 
-# ITM_MST - Item Master
+## Overview
 
-- **Source:** HOST
-- **Destination:** SDM
-- **Trigger:** Change some items or skus in the system or insert a new items and skus.
-- **Action:** Item(s) and sku(s) change according to the newer data. Nothing changes on already created stock unit having one of the changed skus.
+**Source:** `HOST`  
+**Destination:** `SDM`
+
+The ITM_MST message is sent by the HOST system to notify SDM of newly created or modified items and SKUs, ensuring that master data remains synchronized across both systems; when received, SDM updates item and SKU records according to the latest information, while preserving all existing stock units unchanged so that any inventory already created with a previous SKU configuration retains its original attributes for full traceability.
+
+
+## Trigger
+
+- **Insertion of new items or SKUs:**  
+  A new item or SKU is created in the HOST master-data system.
+
+- **Modification of existing items or SKUs:**  
+  Any change to item or SKU attributes—such as dimensions, weight, GTIN, descriptions, shelf‑life parameters, or packaging information—automatically triggers an update message to SDM.
+
+
+## Expected Behavior
+
+Upon receiving an `ITM_MST` message:
+
+1. SDM **updates all affected items and SKUs** using the new master‑data values provided by the HOST system.
+2. **Existing stock units remain unchanged**, preserving the attributes they had at the time of creation.
+3. Only master‑data tables are updated, ensuring that inventory already in the warehouse **retains historical accuracy and full traceability**.
 
 ---
 
-Example of processing the message
+## Example: Processing a `ITM_MST` Message
 
-```sql title="Process_ITM_MST.sql"
+```sql title="Simulate ITM_MST processing"
 --SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 DECLARE	@return_value Int,
 		@XmlReplyMessage xml,
@@ -97,9 +115,9 @@ GO
 
 ```
 
-Example of ITM_MST xml message
+## XML Example
 
-```xml
+``` xml title="ITM_MST xml template"
 <Document>
   <Header>
     <Sender>HOST</Sender>
