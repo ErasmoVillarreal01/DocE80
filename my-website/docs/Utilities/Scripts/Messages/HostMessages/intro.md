@@ -3,7 +3,6 @@ title: Host Messages Processing Scripts
 tags: [sql, message-processing, scripts, sdm, host-messages]
 ---
 
-# Host Messages Processing Scripts
 
 This section contains SQL scripts designed to simulate the processing of host incoming  messages in **SDM**.
 

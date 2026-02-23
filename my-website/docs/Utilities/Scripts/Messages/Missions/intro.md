@@ -1,9 +1,7 @@
 ---
-title: Host Messages Processing Scripts
+title: Missions Processing Scripts
 tags: [sql, message-processing, scripts, sdm, missions, lgv, handling]
 ---
-
-# Missions Messages Processing Scripts
 
 This section contains SQL scripts designed to simulate the processing of missions   messages in **SDM**.
 
