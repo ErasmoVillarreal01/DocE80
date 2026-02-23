@@ -8,8 +8,12 @@ tags: [sql, scripts, message-processing]
 This section contains SQL scripts designed to simulate the processing of host incoming  messages in **SDM**.
 
 ## Available Scripts
-- [ITM_MST](./ITM_MST.md)  
-- [Clean Message Queue](./script2.md)  
+- [ITM_MST](./ITM_MST.md)
+- [RET_CNL](./RET_CNL.md) 
+- [RET_RQS](./RET_RQS.md)  
+- [SHP_INS](./SHP_INS.md)  
+- [SU_CNG](./SU_CNG.md) 
+- [SU_DATA](./SU_DATA.md)
 
 ## Best Practices
 :::tip
