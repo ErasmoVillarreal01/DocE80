@@ -1,5 +1,5 @@
 ---
-title: From AMIS - Mission strated from AMIS
+title: Mission strated from AMIS
 tags: [sql, message-processing, scripts, sdm, missions, lgv, handling]
 ---
 
