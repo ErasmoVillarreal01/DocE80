@@ -109,7 +109,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} E80Group PC SW Developer.`,
+        copyright: `Copyright © ${new Date().getFullYear()} PC SW Developer Documentation.`,
       },
       prism: {
         additionalLanguages: ['csharp'],
