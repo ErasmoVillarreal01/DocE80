@@ -1,6 +1,6 @@
 ---
 title: Host Messages Processing Scripts
-tags: [sql, scripts, message-processing]
+tags: [sql, message-processing, scripts, sdm, host-messages]
 ---
 
 # Host Messages Processing Scripts
