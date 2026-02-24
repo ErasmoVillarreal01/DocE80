@@ -11,7 +11,7 @@ This section contains SQL scripts designed to simulate the processing of host in
 - [RET_CNL](./RET_CNL.md) 
 - [RET_RQS](./RET_RQS.md)  
 - [SHP_INS](./SHP_INS.md)  
-- [SU_CNG](./SU_CNG.md) 
+- [SU_CHG](./SU_CHG.md) 
 - [SU_DATA](./SU_DATA.md)
 
 ## Best Practices
