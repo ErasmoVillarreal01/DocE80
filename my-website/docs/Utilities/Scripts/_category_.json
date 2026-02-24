@@ -1,8 +1,8 @@
 {
-    "label": "Messages",
+    "label": "Scripts",
     "link": {
       "type": "generated-index",
-      "title": "Messages Overview",
-      "description": "Overview of all messages grouped by categories."
+      "title": "Scripts Overview",
+      "description": "Overview of all scripts grouped by categories."
     }
   }
