@@ -1,0 +1,8 @@
+{
+    "label": "Messages",
+    "link": {
+      "type": "generated-index",
+      "title": "Messages Use Cases Overview",
+      "description": "Overview of all messages use cases grouped by categories."
+    }
+  }
