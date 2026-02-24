@@ -1,0 +1,8 @@
+{
+    "label": "Messages",
+    "link": {
+      "type": "generated-index",
+      "title": "Messages Overview",
+      "description": "Overview of all messages grouped by categories."
+    }
+  }

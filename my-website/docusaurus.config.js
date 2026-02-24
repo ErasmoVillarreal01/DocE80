@@ -68,6 +68,18 @@ const config = {
         sidebarPath: require.resolve('./sidebars.js'),
       },
     ],
+    [
+      '@cmfcmf/docusaurus-search-local',
+      {
+        // opciones típicas (ajusta a tu caso)
+        indexDocs: true,
+        indexBlog: false,               // true si usas blog
+        indexPages: false,              // true si quieres indexar páginas sueltas
+        language: ['es', 'en'],         // idiomas de tu contenido
+        maxSearchResults: 10
+      }
+    ]
+
   ],
 
 
