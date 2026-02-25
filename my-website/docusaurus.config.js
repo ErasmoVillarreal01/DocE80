@@ -9,12 +9,12 @@ const config = {
   // =========================================================
   // IMPORTANT: GitHub Pages URL config
   // =========================================================
-  url: 'https://erasmovillarreal01.github.io', // Your GitHub Pages URL
-  baseUrl: '/DocE80/',                          // Your repo name (with leading AND trailing slash)
+  url: 'https://salmon-smoke-0f3b1260f.2.azurestaticapps.net', // Your GitHub Pages URL
+  baseUrl: '/',                          // Your repo name (with leading AND trailing slash)
 
-  organizationName: 'ErasmoVillarreal01',       // GitHub username
-  projectName: 'DocE80',                        // GitHub repo name
-  deploymentBranch: 'gh-pages',                 // Docusaurus deploy branch
+  // organizationName: 'ErasmoVillarreal01',       // GitHub username
+  // projectName: 'DocE80',                        // GitHub repo name
+  // deploymentBranch: 'gh-pages',                 // Docusaurus deploy branch
   trailingSlash: false,
 
   // GitHub pages often needs this to avoid broken links
