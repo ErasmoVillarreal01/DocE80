@@ -1,6 +1,6 @@
 # 🖥️ PC Software Developers Documentation
 
-Welcome to the official documentation site for PC software developers. This site is built to provide clear, structured, and up-to-date technical documentation to support development workflows, tools, and best practices.
+This site is built to provide clear, structured, and up-to-date technical documentation to support development workflows, tools, and best practices.
 
 ## 🛠️ Getting Started with Updates
 
