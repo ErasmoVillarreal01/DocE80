@@ -386,12 +386,15 @@ namespace SmilE80.Bff.`PROJECT_NAME`.Controllers
 </br>
 
 ***
-## **Step 9: Test API actions (not necessary but recomended)**
-To test the API actions created, there are different platforms to test like postman, swagger, etc.
+## **Step 9: Test the API Actions**
 
-**[Swagger](./Swagger.md)** -> Guide on how to test in Swagger
+*(Optional but recommended)*
 
-### **9.2 Postman**
+Once all controllers and services have been implemented, it is recommended to validate the API behavior by testing each endpoint.  
+Testing may be performed using **Swagger**, **Postman**, or any other API testing tool.
+
+**Additional documentation:**
+*   **[Swagger](./Swagger.md)** — Instructions for testing endpoints using Swagger.
 
 <br>
 </br>
